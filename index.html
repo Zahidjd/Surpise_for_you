@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>System Access</title>
+    <meta charset="UTF-8">
+
+    <style>
+        body {
+            margin: 0;
+            background: black;
+            color: #00ff00;
+            font-family: monospace;
+            overflow: hidden;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .terminal {
+            padding: 40px;
+            font-size: 18px;
+            white-space: pre-line;
+        }
+
+        .glitch {
+            font-size: 45px;
+            text-align: center;
+            margin-top: 30vh;
+            color: red;
+            display: none;
+            animation: shake 0.3s infinite;
+        }
+
+        @keyframes shake {
+            0% {transform: translate(2px, 2px);}
+            25% {transform: translate(-2px, -2px);}
+            50% {transform: translate(-2px, 2px);}
+            75% {transform: translate(2px, -2px);}
+            100% {transform: translate(2px, 2px);}
+        }
+
+        .prank {
+            text-align: center;
+            font-size: 24px;
+            color: white;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="terminal" id="terminal"></div>
+
+<div class="glitch" id="hackedText">
+    YEAH... I JUST HACKED YOU.
+</div>
+
+<div class="prank" id="prankText">
+    Relax 😂 It’s just a harmless prank.
+</div>
+
+<script>
+    // Matrix background effect
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "01";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+
+    for (let x = 0; x < columns; x++) drops[x] = 1;
+
+    function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#0F0";
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = letters.charAt(Math.floor(Math.random() * letters.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+                drops[i] = 0;
+            drops[i]++;
+        }
+    }
+
+    setInterval(draw, 35);
+
+    // Fake terminal typing
+    const terminal = document.getElementById("terminal");
+
+    const messages = [
+        "Initializing breach...",
+        "Bypassing firewall...",
+        "Accessing camera...",
+        "Downloading personal data...",
+        "Tracking IP address...",
+        "Injecting malicious code..."
+    ];
+
+    let i = 0;
+
+    function typeMessage() {
+        if (i < messages.length) {
+            terminal.innerHTML += messages[i] + "\n";
+            i++;
+            setTimeout(typeMessage, 800);
+        } else {
+            setTimeout(showHackMessage, 1000);
+        }
+    }
+
+    function showHackMessage() {
+        terminal.style.display = "none";
+        document.getElementById("hackedText").style.display = "block";
+
+        setTimeout(() => {
+            document.getElementById("prankText").style.display = "block";
+        }, 2500);
+    }
+
+    typeMessage();
+</script>
+
+</body>
+</html>
